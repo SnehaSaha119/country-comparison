@@ -56,7 +56,7 @@ Zip your solution, upload it somewhere, and send us a link to the zipped file.
   2. Concept of de-bouncing & throttling
 
   * What if the 3rd party provider is not available?  How resilient is our API?
-  1. Retry in sometimes and maybe 3 times max
+  1. Retry in sometimes and few times
   2. Using setTimeout
   
   * What if the requirement for the new endpoint was to also allow the consumer to compare populations for any given date.  How would you modify your implementation?

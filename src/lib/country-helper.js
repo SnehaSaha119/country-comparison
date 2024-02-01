@@ -19,29 +19,43 @@ const countries = [
   'Azerbaijan'
 ];
 
+const countriesUrl = 'https://d6wn6bmjj722w.population.io:443/1.0/countries'
+const populationUrl = 'https://d6wn6bmjj722w.population.io:443/1.0/population/'
+
 exports.getCountries = async function getCountries() {
-  try {
+  console.log("country-helper | getCountries | Start")
 
-    console.log("country-helper | getCountries | Start")
+  let maxRetries = 2;
+  let maxTime = 1000;
 
-    // // using mock data for now
-    // return countries;
+  for (let i = 0; i < maxRetries; i++) {
+    try {
 
-    //using given endpoint
+      // // using mock data for now
+      // return countries;
 
-    console.log("country-helper | getCountries | Start | Axios call to external API")
+      //using given endpoint
 
-    const response = await axios.get('https://d6wn6bmjj722w.population.io:443/1.0/countries')
+      console.log("country-helper | getCountries | Start | Axios call to external API")
 
-    console.log("country-helper | getCountries | End | Axios call to external API")
+      const response = await axios.get(countriesUrl)
 
-    console.log("country-helper | getCountries | End")
+      console.log("country-helper | getCountries | End | Axios call to external API")
 
-    return response?.data?.countries;
-  } catch (error) {
+      console.log("country-helper | getCountries | End")
 
-    console.error("country-helper | getCountries | Error | ", error)
-    throw error
+      return response?.data?.countries;
+    } catch (error) {
+
+      console.error("country-helper | getCountries | Error | ", error)
+
+      if (i === maxRetries - 1) {
+        console.error("country-helper | getCountries | Retry failed");
+        throw error;
+      }
+
+      await new Promise(resolve => setTimeout(resolve, maxTime));
+    }
   }
 };
 
@@ -64,7 +78,7 @@ exports.getCountriesPopulations = async function getCountriesPopulations(countri
 
       console.log("country-helper | getCountriesPopulations | Start | Axios call to external API")
 
-      const url = 'https://d6wn6bmjj722w.population.io:443/1.0/population/' + country + '/' + currentDateFormatted + '/'
+      const url =  populationUrl + country + '/' + currentDateFormatted + '/'
 
       await axios.get(url).then((response) => {
         countriesPopulationList.push({ 'country': country, 'population': response?.data?.total_population?.population })
@@ -90,7 +104,7 @@ exports.getCountriesPopulations = async function getCountriesPopulations(countri
     return countriesPopulationList
   } catch (error) {
 
-    console.error("country-helper | getCountriesPopulations | Error | ",error)
+    console.error("country-helper | getCountriesPopulations | Error | ", error)
     throw error
   }
 };
