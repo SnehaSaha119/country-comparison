@@ -27,6 +27,9 @@ Our current stack is primarily built in Node.js, Golang, and .NET.  Since this s
 5. Or
   - docker build -t country-comparison-app .
   - docker run -p 3000:3000 country-comparison-app
+6. Sample request
+  - GET http://localhost:3000/api/v1/populations?countries=Afghanistan,AFRICA
+  - GET http://localhost:3000/api/v1/countries
 
 ### Requirements
 
